@@ -1,0 +1,20 @@
+这是一个完整的Eclipse工程，通过eclipse可以编译运行它。
+
+在这里：http://developer.android.com/sdk/index.html
+下载：Eclipse + ADT plugin 环境
+
+Windows环境请参考：http://lenky.info/?p=2324
+
+如果Eclipse有导入功能，那么直接导入工程。
+否则可以这样：
+1，使用向导新建fc99tank工程，全点默认。
+2，关闭Eclipse。
+3，删除Eclipse创建的fc99tank工程文件夹下的所有文件。
+4，把github上的fc99tank工程里所有文件拷贝过去。
+5，启动Eclipse。
+6，按F5刷新工程。
+
+
+由于我没有把bin目录放到github上，所以初次打开工程Eclipse可能会报工程存在错误，可以通过执行菜单Project -> clean...或其他方式让Eclipse重新编译所有文件即可。
+
+
