@@ -14,6 +14,7 @@ public class GameGround {
     private Bitmap bmpTile;
     public static int tileScreenWidth, tileScreenHeight;
     public static int gapScreenX, gapScreenY;
+    public static int groundScreenWidth, groundScreenHeight;
     public static int gapScreenWidth, gapScreenHeight;
     
 	public GameGround(Bitmap bmpTile) {
@@ -25,10 +26,14 @@ public class GameGround {
         
         this.tileScreenWidth = this.tileScreenWidth / 2 * 2;
         this.tileScreenHeight = this.tileScreenHeight / 2 * 2;
-        this.gapScreenX = this.tileScreenWidth * GameSetting.tileCountCol;
-        this.gapScreenWidth = MainSurfaceView.screenWidth - this.gapScreenX;
+        
+        this.groundScreenWidth = this.tileScreenWidth * GameSetting.tileCountCol;
+        this.groundScreenHeight = this.tileScreenHeight * GameSetting.tileCountRow;
+        
+        this.gapScreenX = this.groundScreenWidth;
+        this.gapScreenWidth = this.tileScreenWidth * GameSetting.tileCountGap;
         this.gapScreenY = 0;
-        this.gapScreenHeight = MainSurfaceView.screenHeight - this.gapScreenY;
+        this.gapScreenHeight = this.tileScreenHeight * GameSetting.tileCountRow;
 	}
 	
 	private void drawMap(Canvas canvas, Paint paint) {
@@ -83,11 +88,14 @@ public class GameGround {
 	    drawMap(canvas, paint);
 		
 		Paint rectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		rectPaint.setColor(Color.GRAY);
+		rectPaint.setColor(GameSetting.backGroundColor);
+		
 		RectF outerRect = new RectF(gapScreenX, gapScreenY, 
 				MainSurfaceView.screenWidth, MainSurfaceView.screenHeight);
 		canvas.drawRoundRect(outerRect, GameSetting.rightRoundRectRadiusRat, 
 			GameSetting.rightRoundRectRadiusRat, rectPaint);
+		
+		rectPaint = null;
 	}
 	
 	public void drawTile(Canvas canvas, Paint paint, int row, int col, int leftTop, 
