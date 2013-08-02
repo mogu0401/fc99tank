@@ -30,9 +30,10 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
     
     private Resources res = this.getResources();
 
-    private GameGround gameGround;
+    public static GameGround gameGround;
     public static GamePlayer gamePlayer1;
-    public static GamePlayer gamePlayer2;
+    //TODO:
+    //public static GamePlayer gamePlayer2;
     public GameJoyPad gameJoyPad; 
 
     public MainSurfaceView(Context context) {
@@ -60,7 +61,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
 
     private void initGame() {
         gamePlayer1 = new GamePlayer(BitmapFactory.decodeResource(res, R.drawable.player1));
-        gamePlayer2 = new GamePlayer(BitmapFactory.decodeResource(res, R.drawable.player2));
+        //gamePlayer2 = new GamePlayer(BitmapFactory.decodeResource(res, R.drawable.player2));
         gameGround = new GameGround(BitmapFactory.decodeResource(res, R.drawable.tile));
         gameJoyPad = new GameJoyPad(BitmapFactory.decodeResource(res, R.drawable.joypadleft),
             BitmapFactory.decodeResource(res, R.drawable.joypadup),
@@ -79,7 +80,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
                 
                 gameGround.draw(canvas, paint);
                 gamePlayer1.draw(canvas, paint);
-                gamePlayer2.draw(canvas, paint);
+                //gamePlayer2.draw(canvas, paint);
                 gameJoyPad.draw(canvas, paint);
             }
         } catch (Exception e) {
@@ -92,7 +93,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
     
     private void gameLogic() {
         gamePlayer1.logic();
-        gamePlayer2.logic();
+        //gamePlayer2.logic();
         gameJoyPad.logic();
     }
     

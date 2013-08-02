@@ -42,6 +42,8 @@ public class GameSetting {
 	//资源图片tile.png内各个图像的索引
 	//NothingIndex表示不在对应位置画图，而直接显示黑色背景
 	public static final int NothingIndex = 999;
+	//墙外，
+    public static final int outerWallIndex = 998;
     //Player1Index表示玩家1
     public static final int Player1Index = 800;
     //Player2Index
@@ -72,9 +74,7 @@ public class GameSetting {
     public static final int directionLeft = 3;
     //玩家坦克一次移动的屏幕像素数，四个元素分别代表四个级别
     //即：没有吃星星，吃了1个星星，吃了2个星星，吃了3个星星
-    public static final int speedUp[] = {16, 20, 24, 28};
-    //一个循环移动屏幕像素数
-    public static final int stepSpeed = 2;
+    public static final int speedUp[] = {2, 3, 4, 5};
     
     //按下，弹上，置空
     public static final int actionDown = 1;

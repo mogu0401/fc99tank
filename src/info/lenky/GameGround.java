@@ -72,10 +72,18 @@ public class GameGround {
                         MainSurfaceView.gamePlayer1.live = true;
                         MainSurfaceView.gamePlayer1.x = this.tileScreenWidth / 2 * halfCol;
                         MainSurfaceView.gamePlayer1.y = this.tileScreenHeight / 2 * halfRow;
+                        //Reset Map Data
+                        curtMap[leftTop] = curtMap[leftTop + 1] =
+                            curtMap[leftTop + GameSetting.tileCountCol * 2] = 
+                                curtMap[leftTop + GameSetting.tileCountCol * 2 + 1] = GameSetting.NothingIndex;
                     } else if (leftTop == GameSetting.Player2Index) {
-                        MainSurfaceView.gamePlayer2.live = true;
-                        MainSurfaceView.gamePlayer2.x = this.tileScreenWidth / 2 * halfCol;
-                        MainSurfaceView.gamePlayer2.y = this.tileScreenHeight / 2 * halfRow;
+                        //MainSurfaceView.gamePlayer2.live = true;
+                        //MainSurfaceView.gamePlayer2.x = this.tileScreenWidth / 2 * halfCol;
+                        //MainSurfaceView.gamePlayer2.y = this.tileScreenHeight / 2 * halfRow;
+                        //Reset Map Data
+                        curtMap[leftTop] = curtMap[leftTop + 1] =
+                            curtMap[leftTop + GameSetting.tileCountCol * 2] = 
+                                curtMap[leftTop + GameSetting.tileCountCol * 2 + 1] = GameSetting.NothingIndex;
                     }
                 }
             }
@@ -181,6 +189,19 @@ public class GameGround {
         canvas.drawBitmap(this.bmpTile, src, dst, paint);
         src = null;
         dst = null;
+    }
+    
+    //返回资源图片tile.png内各个图像的索引值，外部借此判断像素点落在哪里
+    public int fallOnWhere (int x, int y) {
+        int row, col;
+        
+        if (x < 0 || x >= this.groundScreenWidth || y < 0 || y >= this.groundScreenHeight)
+            return GameSetting.outerWallIndex;
+        
+        col = x / (this.tileScreenWidth / 2);
+        row = y / (this.tileScreenHeight / 2);
+        
+        return this.curtMap[row * GameSetting.tileCountCol * 2 + col];
     }
 	
 }

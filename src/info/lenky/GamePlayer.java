@@ -10,7 +10,7 @@ public class GamePlayer {
     public boolean live;
     public int level;
 	public int x, y;
-	public int xCount, yCount;
+	public boolean xCount, yCount;
 	public int direction;
 	//两张图片交叉显示，形成动感
 	private boolean oneTwo;
@@ -21,8 +21,8 @@ public class GamePlayer {
 	    this.level = 0;
 	    this.direction = GameSetting.directionUp;
 	    this.oneTwo = false;
-	    this.xCount = 0;
-	    this.yCount = 0;
+	    this.xCount = false;
+	    this.yCount = false;
 		this.bmpPlayer = bmpPlayer;
 	}
 
@@ -47,17 +47,8 @@ public class GamePlayer {
         this.oneTwo = !this.oneTwo;
         src.right = src.left + GameSetting.playerWidth;
   
-        if (x < 0)
-            x = 0;
-        else if (x > GameGround.groundScreenWidth)
-            x = GameGround.groundScreenWidth - GameGround.tileScreenWidth;
         dst.left = x;
         dst.right = dst.left + GameGround.tileScreenWidth;
-        
-        if (y < 0)
-            y = 0;
-        else if (y > GameGround.groundScreenHeight)
-            y = GameGround.groundScreenHeight - GameGround.tileScreenHeight;
         dst.top = y;
         dst.bottom = dst.top + GameGround.tileScreenHeight;
         
@@ -66,21 +57,117 @@ public class GamePlayer {
         dst = null;
     }
 	
-	public void logic() {
-	    if (this.xCount > 0) {
-	        this.xCount -= GameSetting.stepSpeed;
-	        if (this.direction == GameSetting.directionLeft)
-	            this.x -= GameSetting.stepSpeed;
-	        else if (this.direction == GameSetting.directionRight)
-	            this.x += GameSetting.stepSpeed;
-	    }
-	    
-	    if (this.yCount > 0) {
-            this.yCount -= GameSetting.stepSpeed;
-            if (this.direction == GameSetting.directionUp)
-                this.y -= GameSetting.stepSpeed;
-            else if (this.direction == GameSetting.directionDown)
-                this.y += GameSetting.stepSpeed;
+    private void moveLeft(int moveStep) {
+        int tX1, tY1, tX2, tY2;
+        tX1 = x - moveStep;
+        tY1 = y;
+        tX2 = x - moveStep;
+        //减去1是因为像素位置应该是一个半闭半开范围，即[0, GameGround.tileScreenHeight)
+        tY2 = y + GameGround.tileScreenHeight - 1; 
+        if (MainSurfaceView.gameGround.fallOnWhere(tX1, tY1) == GameSetting.NothingIndex &&
+            MainSurfaceView.gameGround.fallOnWhere(tX2, tY2) == GameSetting.NothingIndex)
+        {
+            this.x -= moveStep;
         }
+    }
+    
+    private void moveRight(int moveStep) {
+        int tX1, tY1, tX2, tY2;
+        tX1 = x + GameGround.tileScreenWidth - 1 + moveStep;
+        tY1 = y;
+        tX2 = x + GameGround.tileScreenWidth - 1 + moveStep;
+        tY2 = y + GameGround.tileScreenHeight - 1;
+        if (MainSurfaceView.gameGround.fallOnWhere(tX1, tY1) == GameSetting.NothingIndex &&
+            MainSurfaceView.gameGround.fallOnWhere(tX2, tY2) == GameSetting.NothingIndex)
+        {
+            this.x += moveStep;
+        }
+    }
+    
+    private void moveUp(int moveStep) {
+        int tX1, tY1, tX2, tY2;
+        tX1 = x;
+        tY1 = y - moveStep;
+        tX2 = x + GameGround.tileScreenWidth - 1;
+        tY2 = y - moveStep;
+        if (MainSurfaceView.gameGround.fallOnWhere(tX1, tY1) == GameSetting.NothingIndex &&
+            MainSurfaceView.gameGround.fallOnWhere(tX2, tY2) == GameSetting.NothingIndex)
+        {
+            this.y -= moveStep;
+        }
+    }
+    
+    private void moveDown(int moveStep) {
+        int tX1, tY1, tX2, tY2;
+        tX1 = x;
+        tY1 = y + GameGround.tileScreenHeight - 1 + moveStep;
+        tX2 = x + GameGround.tileScreenWidth - 1;
+        tY2 = y + GameGround.tileScreenHeight - 1 + moveStep;
+        if (MainSurfaceView.gameGround.fallOnWhere(tX1, tY1) == GameSetting.NothingIndex &&
+            MainSurfaceView.gameGround.fallOnWhere(tX2, tY2) == GameSetting.NothingIndex)
+        {
+            this.y += moveStep;
+        }
+    }
+    
+	public void logic() {
+	    int adjustPosition;
+	    int tempSpeedUp;
+	    
+	    if (this.xCount == false && this.yCount == false) {
+            if (this.direction == GameSetting.directionLeft) {
+                if ((adjustPosition = x % (GameGround.tileScreenWidth / 2)) > 0) {
+                    if (adjustPosition > GameSetting.speedUp[level])
+                        tempSpeedUp = GameSetting.speedUp[level];
+                    else
+                        tempSpeedUp = adjustPosition;
+                    this.moveLeft(tempSpeedUp);
+                }
+            } else if (this.direction == GameSetting.directionRight) {
+                if ((adjustPosition = (GameGround.tileScreenWidth / 2) - (x % (GameGround.tileScreenWidth / 2))) 
+                    < (GameGround.tileScreenWidth / 2)) 
+                {
+                    if (adjustPosition > GameSetting.speedUp[level])
+                        tempSpeedUp = GameSetting.speedUp[level];
+                    else
+                        tempSpeedUp = adjustPosition;
+                    this.moveRight(tempSpeedUp);
+                }
+            } else if (this.direction == GameSetting.directionUp) {
+                if ((adjustPosition = y % (GameGround.tileScreenHeight / 2)) > 0) {
+                    if (adjustPosition > GameSetting.speedUp[level])
+                        tempSpeedUp = GameSetting.speedUp[level];
+                    else
+                        tempSpeedUp = adjustPosition;
+                    this.moveUp(tempSpeedUp);
+                }
+            } else if (this.direction == GameSetting.directionDown) {
+                if ((adjustPosition = (GameGround.tileScreenHeight / 2) - (y % (GameGround.tileScreenHeight / 2)))
+                    < (GameGround.tileScreenHeight / 2))
+                {
+                    if (adjustPosition > GameSetting.speedUp[level])
+                        tempSpeedUp = GameSetting.speedUp[level];
+                    else
+                        tempSpeedUp = adjustPosition;
+                    this.moveDown(tempSpeedUp);
+                }
+            }
+	    } else {
+    	    if (this.xCount) {
+    	        if (this.direction == GameSetting.directionLeft) {
+    	            this.moveLeft(GameSetting.speedUp[level]);
+    	        } else if (this.direction == GameSetting.directionRight) {
+    	            this.moveRight(GameSetting.speedUp[level]);
+    	        }
+    	    }
+    	    
+    	    if (this.yCount) {
+                if (this.direction == GameSetting.directionUp) {
+                    this.moveUp(GameSetting.speedUp[level]);
+                } else if (this.direction == GameSetting.directionDown) {
+                    this.moveDown(GameSetting.speedUp[level]);
+                }
+            }
+	    }
 	}
 }
