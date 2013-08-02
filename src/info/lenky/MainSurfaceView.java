@@ -7,6 +7,7 @@ import info.lenky.R;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -32,10 +33,14 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
 
     public static GameGround gameGround;
     public static GamePlayer gamePlayer1;
-    //TODO:
+    //TODO: 连网游戏或一名AI玩家
     //public static GamePlayer gamePlayer2;
     public GameJoyPad gameJoyPad; 
 
+    private Random random;
+    private Bitmap bmpEnemy;
+    private Vector<GameEnemy> vGameEnemy;
+    
     public MainSurfaceView(Context context) {
         super(context);
         sfh = this.getHolder();
@@ -70,6 +75,11 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
             BitmapFactory.decodeResource(res, R.drawable.joypadfire));
 
         gameGround.loadMapData(R.raw.map_1);
+        
+        bmpEnemy = BitmapFactory.decodeResource(res, R.drawable.enemy);
+        vGameEnemy = new Vector<GameEnemy>();
+        //实例随机库
+        random = new Random();
     }
 
     public void drawView() {
@@ -82,6 +92,11 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
                 gamePlayer1.draw(canvas, paint);
                 //gamePlayer2.draw(canvas, paint);
                 gameJoyPad.draw(canvas, paint);
+                
+                for (int i = 0; i < vGameEnemy.size(); i++) {
+                    GameEnemy gameEnemy = vGameEnemy.elementAt(i);
+                    gameEnemy.draw(canvas, paint);
+                }
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -91,7 +106,28 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         }
     }
     
+    private void createNewEnemy(int position) {
+        int x, y;
+        x = this.gameGround.tileScreenWidth / 2 * GameSetting.enemyInitPostion[position][1];
+        y = this.gameGround.tileScreenHeight / 2 * GameSetting.enemyInitPostion[position][0];
+        
+        vGameEnemy.addElement(new GameEnemy(bmpEnemy, x, y));
+        
+        this.gameGround.updateCurtMap(GameSetting.enemyInitPostion[position], GameSetting.EnemyIndex);
+    }
+    
+    public void logic() {
+        int position;
+        
+        if (vGameEnemy.size() < GameSetting.curtMaxEnemy) {
+            position = random.nextInt(1000) % 3;
+            if (this.gameGround.coordinateIsNothing(GameSetting.enemyInitPostion[position]))
+                createNewEnemy(position);
+        }
+    }
+    
     private void gameLogic() {
+        this.logic();
         gamePlayer1.logic();
         //gamePlayer2.logic();
         gameJoyPad.logic();

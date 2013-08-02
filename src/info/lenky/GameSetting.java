@@ -34,12 +34,18 @@ public class GameSetting {
 
 	//资源图片tile.png内图像得像素值
 	public static final int tileWidth = 16;
-	//资源图片player1.png和player2.png内图像得像素值
-	public static final int playerWidth = 16;
+	//资源图片player1.png和player2.png、enemy.png内坦克图像得像素值
+	public static final int tankWidth = 16;
 	//资源图片bullet.png内图像得像素值
 	public static final int bulletWidth = 6;
 	
-	//资源图片tile.png内各个图像的索引
+	//敌方坦克出现的初始位置，按（row×2, col×2）坐标进行定位
+    public static final int enemyInitPostion[][] = {{0, 0}, {0, 12}, {0, 24}};
+    
+    //同时出现敌方坦克数
+    public static final int curtMaxEnemy = 5;
+
+    //资源图片tile.png内各个图像的索引
 	//NothingIndex表示不在对应位置画图，而直接显示黑色背景
 	public static final int NothingIndex = 999;
 	//墙外，
@@ -48,6 +54,8 @@ public class GameSetting {
     public static final int Player1Index = 800;
     //Player2Index
     public static final int Player2Index = 801;
+    //Enemy坦克
+    public static final int EnemyIndex = 700;
 	public static final int brickIndex = 0;
 	public static final int rockIndex = 1;
 	public static final int forestIndex = 2;

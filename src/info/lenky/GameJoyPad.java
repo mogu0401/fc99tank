@@ -82,6 +82,7 @@ public class GameJoyPad {
         src.bottom = GameSetting.joyPadDirectionWidth;
         src.right = GameSetting.joyPadDirectionWidth;
         
+        //TODO: 按钮按动效果
 //        paint.setAlpha(100);
         canvas.drawBitmap(this.bmpJoyPadLeft, src, screenRect[0], paint);
         canvas.drawBitmap(this.bmpJoyPadUp, src, screenRect[1], paint);

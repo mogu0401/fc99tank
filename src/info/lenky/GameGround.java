@@ -192,7 +192,7 @@ public class GameGround {
     }
     
     //返回资源图片tile.png内各个图像的索引值，外部借此判断像素点落在哪里
-    public int fallOnWhere (int x, int y) {
+    public int pixelFallOnWhere (int x, int y) {
         int row, col;
         
         if (x < 0 || x >= this.groundScreenWidth || y < 0 || y >= this.groundScreenHeight)
@@ -202,6 +202,35 @@ public class GameGround {
         row = y / (this.tileScreenHeight / 2);
         
         return this.curtMap[row * GameSetting.tileCountCol * 2 + col];
+    }
+    
+    public boolean coordinateIsNothing(int position[]) {
+        return coordinateIsNothing(position[0], position[1]);
+    }
+    
+    public boolean coordinateIsNothing(int halfRow, int halfCol) {
+        
+        int leftTop = halfRow * GameSetting.tileCountCol * 2 + halfCol;
+        
+        if (curtMap[leftTop] == GameSetting.NothingIndex && curtMap[leftTop] == curtMap[leftTop + 1] &&
+            curtMap[leftTop] == curtMap[leftTop + GameSetting.tileCountCol * 2] &&
+            curtMap[leftTop] == curtMap[leftTop + GameSetting.tileCountCol * 2 + 1])
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public void updateCurtMap(int position[], int data) {
+        updateCurtMap(position[0], position[1], data);
+    }
+    
+    public void updateCurtMap(int halfRow, int halfCol, int data) {
+        int leftTop = halfRow * GameSetting.tileCountCol * 2 + halfCol;
+        
+        curtMap[leftTop] = curtMap[leftTop + 1] = 
+            curtMap[leftTop + GameSetting.tileCountCol * 2] = 
+                curtMap[leftTop + GameSetting.tileCountCol * 2 + 1] = data;
     }
 	
 }
