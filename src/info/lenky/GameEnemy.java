@@ -10,6 +10,7 @@ public class GameEnemy extends GameTank{
         this.x = x;
         this.y = y;
         this.live = true;
+        //TODO: 暂定初始时都是向下，后续可改
         this.direction = GameSetting.directionDown;
     }
 

@@ -6,13 +6,21 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class GameTank {
-    public boolean live;
-    public int level;
+    protected boolean live;
+    protected int level;
     //levelY取0或者1，仅为enemy坦克时有效，因为enemy坦克有两排
-    public int levelY;
-    public int x, y;
+    private int levelY;
+    protected int x, y;
     
-    public int direction;
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    protected int direction;
     //两张图片交叉显示，形成动感
     private boolean oneTwo;
     private Bitmap bmpPlayer;
@@ -24,6 +32,14 @@ public class GameTank {
         this.direction = GameSetting.directionUp;
         this.oneTwo = false;
         this.bmpPlayer = bmpPlayer;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     public void draw(Canvas canvas, Paint paint) {

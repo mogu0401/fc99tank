@@ -14,6 +14,9 @@ public class GameSetting {
 	//用于显示游戏信息的右2列空间外围圆角矩形的圆角角度值
 	public static final float rightRoundRectRadiusRat = 5f;
 	
+	//支持同时2个触点就足够了，一个方向键，一个子弹发射键
+	public static final int maxTouchPoint = 2;
+	
 	//手柄方向盘中心位置
     public static final float joyPadDirectionRow = tileCountRow - 2.6f;
     public static final float joyPadDirectionCol = 2.6f;
@@ -76,6 +79,7 @@ public class GameSetting {
 
 	//玩家坦克的移动方向，这几个值需要和资源图片
 	//player1.png和player2.png内坦克图像的指向一致
+	//以及bullet.png内子弹的指向一致，所以在准备资源图片是要注意这一点
     public static final int directionUp = 0;
     public static final int directionRight = 1;
     public static final int directionDown = 2;
@@ -83,11 +87,11 @@ public class GameSetting {
     //玩家坦克一次移动的屏幕像素数，四个元素分别代表四个级别
     //即：没有吃星星，吃了1个星星，吃了2个星星，吃了3个星星
     public static final int speedUp[] = {2, 3, 4, 5};
+    //玩家坦克子弹速度
+    public static final int bulletMultiSpeed = 2;
     
     //按下，弹上，置空
-    public static final int actionDown = 1;
-    public static final int actionUp = 2;
-    public static final int actionNull = 0;
-    
-    
+    public static final int actionAnyKeyDown = 1;
+    public static final int actionAllKeyUp = 2;
+   
 }

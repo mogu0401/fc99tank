@@ -25,7 +25,8 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
     private Canvas canvas;
     
     public static int screenWidth, screenHeight;
-    public static int touchX, touchY;
+    public static int curtTouchPointCount;
+    public static int touchPoint[][];
     
     public static int eventAction;
     
@@ -51,7 +52,10 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         setFocusableInTouchMode(true);
         //设置背景常亮
         this.setKeepScreenOn(true);
-        this.eventAction = GameSetting.actionNull;
+        this.eventAction = GameSetting.actionAllKeyUp;
+        
+        this.curtTouchPointCount = 0;
+        this.touchPoint = new int[GameSetting.maxTouchPoint][2];
     }
 
     @Override
@@ -80,6 +84,8 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         vGameEnemy = new Vector<GameEnemy>();
         //实例随机库
         random = new Random();
+        
+        GameBullet.bmpBullet = BitmapFactory.decodeResource(res, R.drawable.bullet);
     }
 
     public void drawView() {
@@ -152,17 +158,39 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        int pointCount = event.getPointerCount();
+        int del = -1;
+        
         switch (event.getAction()) {
+        case MotionEvent.ACTION_POINTER_UP:
+        //我的手机上捕获到的是这几个被Deprecated的值，所以这里也列进来
+        case MotionEvent.ACTION_POINTER_2_UP:
+            del = event.getActionIndex();
+        case MotionEvent.ACTION_POINTER_DOWN:
+        case MotionEvent.ACTION_POINTER_2_DOWN:
         case MotionEvent.ACTION_DOWN:
-            this.eventAction = GameSetting.actionDown;
+            this.eventAction = GameSetting.actionAnyKeyDown;
             break;
+        
         case MotionEvent.ACTION_UP:
-            this.eventAction = GameSetting.actionUp;
+            this.eventAction = GameSetting.actionAllKeyUp;
             break;
         }
-        this.touchX = (int) event.getRawX();
-        this.touchY = (int) event.getRawY();
         
+        if (pointCount > GameSetting.maxTouchPoint)
+            pointCount = GameSetting.maxTouchPoint;
+
+        this.curtTouchPointCount = pointCount;
+        for (int i = 0; i < pointCount; i ++) {
+            if (del == i) {
+                this.touchPoint[i][0] = -1;
+                this.touchPoint[i][1] = -1;
+            } else {
+                this.touchPoint[i][0] = (int) event.getX(i);
+                this.touchPoint[i][1] = (int) event.getY(i);
+            }
+        }
+
         return true;
     }
     

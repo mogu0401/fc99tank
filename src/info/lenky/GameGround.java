@@ -69,7 +69,7 @@ public class GameGround {
                 {
                     //寻找玩家坦克初始位置
                     if (curtMap[leftTop] == GameSetting.Player1Index) {
-                        MainSurfaceView.gamePlayer1.live = true;
+                        MainSurfaceView.gamePlayer1.setLive(true);
                         MainSurfaceView.gamePlayer1.x = this.tileScreenWidth / 2 * halfCol;
                         MainSurfaceView.gamePlayer1.y = this.tileScreenHeight / 2 * halfRow;
                         //Reset Map Data
