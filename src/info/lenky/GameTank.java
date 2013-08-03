@@ -38,10 +38,6 @@ public class GameTank {
         return direction;
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
     public void draw(Canvas canvas, Paint paint) {
         if (!live)
             return;

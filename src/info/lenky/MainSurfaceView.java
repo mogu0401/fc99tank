@@ -55,7 +55,9 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         this.eventAction = GameSetting.actionAllKeyUp;
         
         this.curtTouchPointCount = 0;
-        this.touchPoint = new int[GameSetting.maxTouchPoint][2];
+        //三个元素分别为：x, y, down/up
+        //down为1, up为0
+        this.touchPoint = new int[GameSetting.maxTouchPoint][3];
     }
 
     @Override
@@ -119,7 +121,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         
         vGameEnemy.addElement(new GameEnemy(bmpEnemy, x, y));
         
-        this.gameGround.updateCurtMap(GameSetting.enemyInitPostion[position], GameSetting.EnemyIndex);
+        this.gameGround.updateTileMapByPosition(GameSetting.enemyInitPostion[position], GameSetting.EnemyIndex);
     }
     
     public void logic() {
@@ -182,12 +184,13 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
 
         this.curtTouchPointCount = pointCount;
         for (int i = 0; i < pointCount; i ++) {
+            this.touchPoint[i][0] = (int) event.getX(i);
+            this.touchPoint[i][1] = (int) event.getY(i);
+            
             if (del == i) {
-                this.touchPoint[i][0] = -1;
-                this.touchPoint[i][1] = -1;
+                this.touchPoint[i][2] = 0;
             } else {
-                this.touchPoint[i][0] = (int) event.getX(i);
-                this.touchPoint[i][1] = (int) event.getY(i);
+                this.touchPoint[i][2] = 1;
             }
         }
 

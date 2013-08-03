@@ -99,48 +99,61 @@ public class GameJoyPad {
     
     public void logic() {
         int touchX, touchY;
+        boolean down;
         
         if (MainSurfaceView.eventAction == GameSetting.actionAnyKeyDown) {
             for (int i = 0; i < MainSurfaceView.curtTouchPointCount; i ++) {
                 touchX = MainSurfaceView.touchPoint[i][0];
                 touchY = MainSurfaceView.touchPoint[i][1];
-                if (touchX == -1 || touchY == -1)
-                    continue;
+                down = (MainSurfaceView.touchPoint[i][2] == 1) ? true : false;
                 if (CollsionCheck.isCollsion(touchX, touchY, screenRect[0])) {
                     if (MainSurfaceView.gamePlayer1.getDirection() != GameSetting.directionLeft) {
-                        MainSurfaceView.gamePlayer1.xCount = false;
-                        MainSurfaceView.gamePlayer1.yCount = false;
-                        MainSurfaceView.gamePlayer1.setDirection(GameSetting.directionLeft);
+                        MainSurfaceView.gamePlayer1.setxCount(false);
+                        MainSurfaceView.gamePlayer1.setyCount(false);
+                        MainSurfaceView.gamePlayer1.setTurnRound(GameSetting.directionLeft);
                     }
-                    MainSurfaceView.gamePlayer1.xCount = true;
+                    if (down)
+                        MainSurfaceView.gamePlayer1.setxCount(true);
+                    else
+                        MainSurfaceView.gamePlayer1.setxCount(false);
                 } else if (CollsionCheck.isCollsion(touchX, touchY, screenRect[1])) {
                     if (MainSurfaceView.gamePlayer1.getDirection() != GameSetting.directionUp) {
-                        MainSurfaceView.gamePlayer1.xCount = false;
-                        MainSurfaceView.gamePlayer1.yCount = false;
-                        MainSurfaceView.gamePlayer1.setDirection(GameSetting.directionUp);
+                        MainSurfaceView.gamePlayer1.setxCount(false);
+                        MainSurfaceView.gamePlayer1.setyCount(false);
+                        MainSurfaceView.gamePlayer1.setTurnRound(GameSetting.directionUp);
                     }
-                    MainSurfaceView.gamePlayer1.yCount = true;
+                    if (down)
+                        MainSurfaceView.gamePlayer1.setyCount(true);
+                    else
+                        MainSurfaceView.gamePlayer1.setyCount(false);
                 } else if (CollsionCheck.isCollsion(touchX, touchY, screenRect[2])) {
                     if (MainSurfaceView.gamePlayer1.getDirection() != GameSetting.directionRight) {
-                        MainSurfaceView.gamePlayer1.xCount = false;
-                        MainSurfaceView.gamePlayer1.yCount = false;
-                        MainSurfaceView.gamePlayer1.setDirection(GameSetting.directionRight);
+                        MainSurfaceView.gamePlayer1.setxCount(false);
+                        MainSurfaceView.gamePlayer1.setyCount(false);
+                        MainSurfaceView.gamePlayer1.setTurnRound(GameSetting.directionRight);
                     }
-                    MainSurfaceView.gamePlayer1.xCount = true;
+                    if (down)
+                        MainSurfaceView.gamePlayer1.setxCount(true);
+                    else
+                        MainSurfaceView.gamePlayer1.setxCount(false);
                 }  else if (CollsionCheck.isCollsion(touchX, touchY, screenRect[3])) {
                     if (MainSurfaceView.gamePlayer1.getDirection() != GameSetting.directionDown) {
-                        MainSurfaceView.gamePlayer1.xCount = false;
-                        MainSurfaceView.gamePlayer1.yCount = false;
-                        MainSurfaceView.gamePlayer1.setDirection(GameSetting.directionDown);
+                        MainSurfaceView.gamePlayer1.setxCount(false);
+                        MainSurfaceView.gamePlayer1.setyCount(false);
+                        MainSurfaceView.gamePlayer1.setTurnRound(GameSetting.directionDown);
                     }
-                    MainSurfaceView.gamePlayer1.yCount = true;
+                    if (down)
+                        MainSurfaceView.gamePlayer1.setyCount(true);
+                    else
+                        MainSurfaceView.gamePlayer1.setyCount(false);
                 } else if (CollsionCheck.isCollsion(touchX, touchY, screenRect[4])) {
-                    MainSurfaceView.gamePlayer1.fire();
+                    if (down)
+                        MainSurfaceView.gamePlayer1.fire();                    
                 }
             }
         } else if (MainSurfaceView.eventAction == GameSetting.actionAllKeyUp) {
-            MainSurfaceView.gamePlayer1.xCount = false;
-            MainSurfaceView.gamePlayer1.yCount = false;
+            MainSurfaceView.gamePlayer1.setxCount(false);
+            MainSurfaceView.gamePlayer1.setyCount(false);
         }
         
     }

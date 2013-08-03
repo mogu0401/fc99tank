@@ -192,7 +192,8 @@ public class GameGround {
     }
     
     //返回资源图片tile.png内各个图像的索引值，外部借此判断像素点落在哪里
-    public int pixelFallOnWhere (int x, int y) {
+    public int pixelFallOnWhere(int x, int y) {
+        int index;
         int row, col;
         
         if (x < 0 || x >= this.groundScreenWidth || y < 0 || y >= this.groundScreenHeight)
@@ -201,7 +202,12 @@ public class GameGround {
         col = x / (this.tileScreenWidth / 2);
         row = y / (this.tileScreenHeight / 2);
         
-        return this.curtMap[row * GameSetting.tileCountCol * 2 + col];
+        index = row * GameSetting.tileCountCol * 2 + col;
+        
+        //if (index < 0 || index >= this.curtMap.length)
+        //    return GameSetting.outerWallIndex;
+        //else //直接这样，出现错误好及时暴露出来
+            return this.curtMap[index];
     }
     
     public boolean coordinateIsNothing(int position[]) {
@@ -221,16 +227,32 @@ public class GameGround {
         return false;
     }
     
-    public void updateCurtMap(int position[], int data) {
-        updateCurtMap(position[0], position[1], data);
+    public void updateTileMapByPosition(int position[], int data) {
+        updateTileMapByPosition(position[0], position[1], data);
     }
     
-    public void updateCurtMap(int halfRow, int halfCol, int data) {
+    public void updateTileMapByPosition(int halfRow, int halfCol, int data) {
         int leftTop = halfRow * GameSetting.tileCountCol * 2 + halfCol;
         
         curtMap[leftTop] = curtMap[leftTop + 1] = 
             curtMap[leftTop + GameSetting.tileCountCol * 2] = 
                 curtMap[leftTop + GameSetting.tileCountCol * 2 + 1] = data;
+    }
+    
+    public void updateCurtMapByPixel(int x, int y, int data) {
+        int index;
+        int row, col;
+        
+        if (x < 0 || x >= this.groundScreenWidth || y < 0 || y >= this.groundScreenHeight)
+            return;
+        
+        col = x / (this.tileScreenWidth / 2);
+        row = y / (this.tileScreenHeight / 2);
+        
+        index = row * GameSetting.tileCountCol * 2 + col;
+        
+        //if (index >= 0 && index < this.curtMap.length)
+            this.curtMap[index] = data;
     }
 	
 }

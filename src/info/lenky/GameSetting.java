@@ -86,9 +86,9 @@ public class GameSetting {
     public static final int directionLeft = 3;
     //玩家坦克一次移动的屏幕像素数，四个元素分别代表四个级别
     //即：没有吃星星，吃了1个星星，吃了2个星星，吃了3个星星
-    public static final int speedUp[] = {2, 3, 4, 5};
+    public static final int speedUp[] = {3, 4, 5, 5};
     //玩家坦克子弹速度
-    public static final int bulletMultiSpeed = 2;
+    public static final int bulletMultiSpeed = 3;
     
     //按下，弹上，置空
     public static final int actionAnyKeyDown = 1;
