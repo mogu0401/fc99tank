@@ -33,6 +33,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
     private Resources res = this.getResources();
 
     public static GameGround gameGround;
+    public GameInfo gameInfo;
     public static GamePlayer gamePlayer1;
     //TODO: 连网游戏或一名AI玩家
     //public static GamePlayer gamePlayer2;
@@ -74,12 +75,14 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
         gamePlayer1 = new GamePlayer(BitmapFactory.decodeResource(res, R.drawable.player1));
         //gamePlayer2 = new GamePlayer(BitmapFactory.decodeResource(res, R.drawable.player2));
         gameGround = new GameGround(BitmapFactory.decodeResource(res, R.drawable.tile));
+        //对象的创建还有一些前后次序依赖关系，比如gameInfo必须在gameGround之后
+        //目前采用的是能用就行策略，没有做其他特别的设计，后续可做修改而解除这种依赖
+        gameInfo = new GameInfo(BitmapFactory.decodeResource(res, R.drawable.info));
         gameJoyPad = new GameJoyPad(BitmapFactory.decodeResource(res, R.drawable.joypadleft),
             BitmapFactory.decodeResource(res, R.drawable.joypadup),
             BitmapFactory.decodeResource(res, R.drawable.joypadright),
             BitmapFactory.decodeResource(res, R.drawable.joypaddown),
             BitmapFactory.decodeResource(res, R.drawable.joypadfire));
-
         gameGround.loadMapData(R.raw.map_1);
         
         bmpEnemy = BitmapFactory.decodeResource(res, R.drawable.enemy);
@@ -97,6 +100,7 @@ public class MainSurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawColor(Color.BLACK);
                 
                 gameGround.draw(canvas, paint);
+                gameInfo.draw(canvas, paint);
                 gamePlayer1.draw(canvas, paint);
                 //gamePlayer2.draw(canvas, paint);
                 gameJoyPad.draw(canvas, paint);
